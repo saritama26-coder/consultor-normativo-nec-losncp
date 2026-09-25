@@ -1,0 +1,12 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Estado de ejecución del servidor (no versionar; ver *.example.json)
+server-docs-state.json
+server-file-store.json

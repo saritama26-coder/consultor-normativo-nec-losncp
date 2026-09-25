@@ -1,0 +1,6 @@
+{
+  "name": "Consultor Normativo NEC–LOSNCP",
+  "description": "Herramienta de consulta jurídica y técnica para arquitectura y obra pública en Ecuador, basada exclusivamente en normativa cargada con citas exactas y literales.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
