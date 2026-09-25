@@ -1,8 +1,9 @@
 import { get, set, del } from 'idb-keyval';
-import { ConsultationHistoryItem, NormativeBookmark } from '../types/normative';
+import { ConsultationHistoryItem, NormativeBookmark, SavedQuery } from '../types/normative';
 
 const HISTORY_KEY = 'consultor_normativo_history';
 const BOOKMARKS_KEY = 'consultor_normativo_bookmarks_v1';
+const SAVED_QUERIES_KEY = 'consultor_normativo_saved_queries_v1';
 
 /**
  * IndexedDB se utiliza exclusivamente para almacenar el historial local de consultas
@@ -146,3 +147,25 @@ export async function clearBookmarks(): Promise<void> {
   }
 }
 
+
+/**
+ * Consultas guardadas: preguntas que el usuario marca para reutilizar.
+ * Se guardan solo en IndexedDB de este navegador.
+ */
+export async function getSavedQueries(): Promise<SavedQuery[]> {
+  try {
+    const items = await get<SavedQuery[]>(SAVED_QUERIES_KEY);
+    return Array.isArray(items) ? items : [];
+  } catch (error) {
+    console.error('Error reading saved queries from IndexedDB:', error);
+    return [];
+  }
+}
+
+export async function setSavedQueries(items: SavedQuery[]): Promise<void> {
+  try {
+    await set(SAVED_QUERIES_KEY, items);
+  } catch (error) {
+    console.error('Error saving queries to IndexedDB:', error);
+  }
+}
