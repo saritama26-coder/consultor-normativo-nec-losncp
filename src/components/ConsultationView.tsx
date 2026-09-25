@@ -30,7 +30,6 @@ import {
 import { VoiceDictationButton } from './VoiceDictationButton';
 import { VoiceDictationModal } from './VoiceDictationModal';
 import { ResponseCard } from './ResponseCard';
-import { FrequentQuestionsSection } from './FrequentQuestionsSection';
 import { FREQUENT_QUESTIONS_DATA } from '../data/frequentQuestions';
 import { useBookmarks } from '../hooks/useBookmarks';
 import { BookmarksModal } from './BookmarksModal';
@@ -805,19 +804,6 @@ export const ConsultationView: React.FC<ConsultationViewProps> = ({
                 </button>
               </div>
 
-              {/* SECCIÓN DE CONSULTAS FRECUENTES (NEC / LOSNCP) DEBAJO DEL ÁREA DE ENTRADA */}
-              <FrequentQuestionsSection
-                onSelectQuestion={(selectedQ, autoSubmit, suggestedMode) => {
-                  setQuestion(selectedQ);
-                  if (suggestedMode) {
-                    setMode(suggestedMode);
-                  }
-                  if (autoSubmit) {
-                    handleConsultar(selectedQ);
-                  }
-                }}
-                disabled={isLoading}
-              />
             </div>
           )}
 
