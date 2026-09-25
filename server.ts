@@ -623,6 +623,7 @@ Solo incluye pares en los que ambos artículos estén en los fragmentos recupera
 
     // Attempt generateContent with File Search grounding
     let response: any = null;
+    let usedModel = '';
     const modelsToTry = ['gemini-flash-latest', 'gemini-3.8-flash'];
 
     for (const model of modelsToTry) {
@@ -642,7 +643,10 @@ Solo incluye pares en los que ambos artículos estén en los fragmentos recupera
               ],
             },
           });
-          if (response) break;
+          if (response) {
+            usedModel = model;
+            break;
+          }
         } catch (err: any) {
           logger.warn(`Error llamando a Gemini (${model}, intento ${attempt + 1}):`, err.status || err.message);
           if (attempt < 2) {
@@ -661,6 +665,10 @@ Solo incluye pares en los que ambos artículos estén en los fragmentos recupera
     const { cleanText: generatedText, rawJson: contradictionsJson } = splitContradictionsSection(response.text || '');
     const candidate = response.candidates?.[0];
     const groundingChunks = candidate?.groundingMetadata?.groundingChunks || [];
+    // Diagnóstico: modelo usado, fragmentos recuperados y filtro aplicado (sin datos sensibles)
+    logger.info(
+      `Consulta: modelo=${usedModel}, fragmentos recuperados=${groundingChunks.length}, documentos filtrados=${activeDocs.length}, filtro=${metadataFilter}`
+    );
 
     // MAPEO ESTRICTO DE EVIDENCIA: cada fragmento se atribuye solo a su documento de origen.
     // Si no se puede mapear de forma inequívoca a un documento activo, se DESCARTA (nunca se reasigna).
