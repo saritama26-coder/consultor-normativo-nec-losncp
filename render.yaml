@@ -1,0 +1,22 @@
+# Blueprint de Render para desplegar desde GitHub.
+# No contiene secretos: GEMINI_API_KEY y ADMIN_PASSWORD se piden al crear el servicio;
+# SESSION_SECRET lo genera Render. El servidor los lee de process.env.
+services:
+  - type: web
+    runtime: node
+    name: consultor-normativo-nec-losncp
+    plan: free
+    # --include=dev: tsx (usado por "npm start") y vite (build) están en devDependencies,
+    # y npm omite devDependencies cuando NODE_ENV=production.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
