@@ -30,6 +30,7 @@ import {
 import { VoiceDictationButton } from './VoiceDictationButton';
 import { VoiceDictationModal } from './VoiceDictationModal';
 import { ResponseCard } from './ResponseCard';
+import { QuickAccessPanel } from './QuickAccessPanel';
 import { FREQUENT_QUESTIONS_DATA } from '../data/frequentQuestions';
 import { useBookmarks } from '../hooks/useBookmarks';
 import { BookmarksModal } from './BookmarksModal';
@@ -43,6 +44,7 @@ interface ConsultationViewProps {
   initialQuestion?: string;
   isReadingMode?: boolean;
   onToggleReadingMode?: () => void;
+  history?: ConsultationHistoryItem[];
 }
 
 
@@ -54,6 +56,7 @@ export const ConsultationView: React.FC<ConsultationViewProps> = ({
   initialQuestion = '',
   isReadingMode: isReadingModeProp,
   onToggleReadingMode,
+  history = [],
 }) => {
   const [internalReadingMode, setInternalReadingMode] = useState(false);
   const isReading = isReadingModeProp !== undefined ? isReadingModeProp : internalReadingMode;
@@ -804,6 +807,19 @@ export const ConsultationView: React.FC<ConsultationViewProps> = ({
                 </button>
               </div>
 
+              {/* Accesos rápidos: consultas recientes, guardadas y estado de la biblioteca */}
+              <QuickAccessPanel
+                history={history}
+                documents={documents}
+                currentQuestion={question}
+                currentMode={mode}
+                onSelectQuestion={(selectedQ, selectedMode) => {
+                  setQuestion(selectedQ);
+                  if (selectedMode) setMode(selectedMode);
+                }}
+                onNavigateToDocs={onNavigateToDocs}
+                disabled={isLoading}
+              />
             </div>
           )}
 
