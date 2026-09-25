@@ -548,6 +548,10 @@ app.post('/api/consultar', aiRateLimit, async (req: Request, res: Response): Pro
       res.status(400).json({ error: 'La pregunta no puede estar vacía.' });
       return;
     }
+    if (question.trim().length > 4000) {
+      res.status(400).json({ error: 'La consulta supera el máximo de 4.000 caracteres.' });
+      return;
+    }
 
     // 1. FILTRADO TÉCNICO ESTRICTO: solo documentos activos y filtrables en el store.
     // El filtro se aplica EN la recuperación (metadataFilter), no después.

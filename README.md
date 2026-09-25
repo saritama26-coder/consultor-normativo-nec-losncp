@@ -98,7 +98,9 @@ Para el correcto despliegue y funcionamiento de la aplicación en **Google AI St
 
 **Sesiones de administrador.** Se guardan en memoria: todo reinicio del servidor cierra las sesiones, aun con `SESSION_SECRET` configurado.
 
-**Rate limiter.** Existe un límite global en memoria de 180 solicitudes/minuto por IP y un límite adicional de 30 solicitudes/minuto para las rutas que consumen Gemini; el login administrativo queda limitado a 10 intentos por 15 minutos por IP. Estos límites no se comparten entre instancias.
+**Rate limiter.** Existe un límite global en memoria de 180 solicitudes/minuto por IP y un límite adicional de 30 solicitudes/minuto para las rutas que consumen Gemini; el login administrativo queda limitado a 10 intentos por 15 minutos por IP. Cada límite lleva su propio conteo. Estos límites no se comparten entre instancias. Si la app corre detrás de un proxy sin configurar `trust proxy`, todos los usuarios pueden compartir la misma IP y, por tanto, los mismos límites.
+
+**Límites de contenido.** Consulta normativa: máximo 4.000 caracteres. Generación de puntos clave: máximo 30.000 caracteres. PDF: máximo 50 MB (el cuerpo JSON admite hasta 72 MB por la conversión a base64).
 
 **Búsqueda directa de artículos.** El estado `FOUND` exige un fragmento del documento elegido que contenga el número de artículo. Si el fragmento solo menciona el artículo (p. ej. "según el Art. 74"), también se considera coincidencia: revise el texto literal.
 
