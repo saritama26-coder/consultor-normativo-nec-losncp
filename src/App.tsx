@@ -349,6 +349,7 @@ export default function App() {
             initialQuestion={pendingQuestion}
             isReadingMode={isReadingMode}
             onToggleReadingMode={() => setIsReadingMode((prev) => !prev)}
+            history={history}
           />
         )}
 
