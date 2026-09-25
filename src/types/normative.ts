@@ -240,3 +240,11 @@ export interface NormativeBookmark {
   createdAt: string;
   updatedAt?: string;
 }
+
+/** Pregunta guardada por el usuario para reutilizarla (solo en este navegador). */
+export interface SavedQuery {
+  id: string;
+  question: string;
+  mode?: ConsultationMode;
+  createdAt: string;
+}
