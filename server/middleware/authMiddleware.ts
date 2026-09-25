@@ -6,12 +6,14 @@ export interface AuthenticatedRequest extends Request {
   user?: UserSession;
 }
 
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-
 /**
  * Rate limiter básico en memoria para mitigar saturación y abusos.
+ * Cada instancia lleva su propio registro por IP: el límite global, el de rutas de IA
+ * y el de login se cuentan por separado (un registro compartido hacía que las cargas
+ * normales de la app bloquearan el login y las consultas).
  */
 export function rateLimiter(limit = 120, windowMs = 60000) {
+  const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
   return (req: Request, res: Response, next: NextFunction) => {
     const ip = req.ip || req.socket.remoteAddress || 'unknown';
     const now = Date.now();
